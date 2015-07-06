@@ -1,0 +1,55 @@
+    <template name="loggedin">
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                {{#if currentUser.username}}
+                    {{currentUser.username}}
+                {{else}}
+                    {{currentUser.profile.name}}
+                {{/if}}
+                <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu navbar-inverse" role="menu">
+                <li>
+                    <a id="showCreateSessionDialog" href="#">Create new session</a>
+                </li>
+                <li class="divider"></li>
+                <li>
+                    <a id="logout" href="#">Logout</a>
+                </li>
+            </ul>
+        </li>
+    </template>
+
+    <template name="loggedout">
+        {{> loginButtons}}
+    </template>
+
+    <template name="createSessionDialog">
+        <div class="row">
+            <div class="col-md-12">
+                <form id="createSessionForm" class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="name">Name</label>
+                        <div class="col-md-4">
+                            <input id="name" name="name" type="text" placeholder="Your name" class="form-control input-md">
+                            <span class="help-block">Here goes your name</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="myFile">Image to share</label>
+                        <div class="col-md-4">
+                            <input type="file" id="myFile" accept="image/*">
+                            <p class="help-block">Upload file.</p>
+                            {{#each images}}
+                                {{#if this.isUploaded}}
+                                    {{> FS.UploadProgressBar bootstrap=true class='progress-bar-success active' showPercent=true}}
+                                {{else}}
+                                    {{> FS.UploadProgressBar bootstrap=true class='progress-bar-striped active' showPercent=true}}
+                                {{/if}}
+                            {{/each}}
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </template>

@@ -1,0 +1,89 @@
+
+/*
+ * Taken from this excellent resource: 
+ *     https://scotch.io/tutorials/building-a-slack-clone-in-meteor-js-getting-started
+ * 
+*/
+.message-history {
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 100%;
+  padding: 0 10px 1rem 1rem;
+}
+
+/*
+ * Taken from this excellent resource: 
+ *     https://scotch.io/tutorials/building-a-slack-clone-in-meteor-js-getting-started
+ * 
+*/
+.message {
+  position: relative;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  padding: .25rem 2rem .1rem 3rem;
+  min-height: 36px;
+  font-size: 12.8px;
+}
+
+/*
+ * Taken from this excellent resource: 
+ *     https://scotch.io/tutorials/building-a-slack-clone-in-meteor-js-getting-started
+ * 
+*/
+.message_profile-pic {
+  position: absolute;
+  left: 0;
+  display: block;
+  -moz-border-radius: 0.2rem;
+  -webkit-border-radius: 0.2rem;
+  border-radius: 0.2rem;
+  width: 24px;
+  height: 24px;
+  background-image: url("http://i.imgur.com/LikUNLc.png");
+  background-size: cover;
+}
+
+/*
+ * Taken from this excellent resource: 
+ *     https://scotch.io/tutorials/building-a-slack-clone-in-meteor-js-getting-started
+ * 
+*/
+.message_username {
+  font-weight: 900;
+  padding-right: .25rem;
+  color: white !important;
+  margin-left: 0;
+  font-style: normal;
+  text-decoration: none;
+}
+
+/*
+ * Taken from this excellent resource: 
+ *     https://scotch.io/tutorials/building-a-slack-clone-in-meteor-js-getting-started
+ * 
+*/
+.message_timestamp {
+  text-align: left;
+  display: inline;
+  position: relative;
+  top: 0;
+  left: 0;
+  color: #babbbf;
+  font-size: 12px;
+  line-height: 1.2rem;
+  width: 36px;
+  margin-right: 0;
+  margin-left: 0;
+  font-style: italic;
+}
+
+/*
+ * Taken from this excellent resource: 
+ *     https://scotch.io/tutorials/building-a-slack-clone-in-meteor-js-getting-started
+ * 
+*/
+.message_content {
+  color: white;
+  display: block;
+  min-height: 1rem;
+}

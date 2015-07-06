@@ -1,0 +1,31 @@
+# Meteor packages used by this project, one per line.
+# Check this file (and the other files in this directory) into your repository.
+#
+# 'meteor add' and 'meteor remove' will edit this file for you,
+# but you can also edit it by hand.
+
+meteor-platform
+clubfest:raphael
+less
+fortawesome:fontawesome
+twbs:bootstrap
+momentjs:moment
+linto:jquery-ui
+gentunian:tellapic-chat
+anti:fake
+dburles:factory
+accounts-password
+random
+accounts-base
+accounts-facebook
+accounts-google
+accounts-twitter
+accounts-github
+ian:accounts-ui-bootstrap-3
+manuel:reactivearray
+juliancwirko:s-alert
+juliancwirko:s-alert-slide
+cfs:standard-packages
+cfs:filesystem
+cfs:ui
+mizzao:bootboxjs

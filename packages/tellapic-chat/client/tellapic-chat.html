@@ -1,0 +1,58 @@
+    <template name="chatButton">
+        <div class="row">
+            <button type="input" id="createChat" class="btn btn-success">Create chat</button>
+            <button type="input" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Join chat</button>
+            <button type="input" id="simulateChat" class="btn btn-danger simulate">Simulate</button>
+        </div>
+
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                    </div>
+                    <div class="modal-body">
+                        <input type="text" id="chatSessionId">
+                    </div>
+                    <div class="modal-footer">
+                        <button id="joinChat" type="button" class="btn btn-primary" data-dismiss="modal">Join</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template name="tellapicChat">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-6">
+                    {{> tellapicChatMessageHistory}}
+                </div>
+            </div>
+        </div>
+        <div class="input-box">
+            <input type="text" class="input-box_text">
+        </div>
+    </template>
+
+    <template name="tellapicChatMessageHistory">
+        <div class="message-history">
+            {{#if Template.subscriptionsReady}}
+                {{#each messages}}
+                    {{> tellapicChatMessage text=message userId=userId time=receivedAt}}
+                {{/each}}
+            {{/if}}
+        </div>
+    </template>
+
+    <template name="tellapicChatMessage">
+        <div class="message">
+            <a href="" class="message_profile-pic"></a>
+            <a href="" class="message_username">{{getUsernameById userId}}</a>
+            <span class="message_timestamp">{{getMessageTime time}}</span>
+            <span class="message_star"></span>
+            <span class="message_content">{{text}}</span>
+        </div>
+    </template>
