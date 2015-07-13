@@ -5,13 +5,14 @@
     Template.chatButton.events({
 
         "click #createChat": function(event) {
+            console.log('[client]: Template.chatButton.events["click #createChat"] invoked');
             tellapicChat.create();
         },
 
         "click #joinChat": function(event) {
+            console.log('[client]: Template.chatButton.events["click #joinChat"] invoked');
             tellapicChat.join($('#chatSessionId').val());
         },
-
 
     });
 
@@ -36,7 +37,7 @@
     Template.tellapicChatMessageHistory.helpers({
 
         messages: function(){
-            console.log('[client]: messages helper invoked');
+            console.log('[client]: Template.tellapicChatMessageHistory.helper[messages] invoked');
             return ChatMessages.find({}, {sort: {receivedAt:1}});
         }
     });
@@ -70,6 +71,7 @@
     Template.tellapicChat.events({
 
         "keypress input": function(e, template) {
+            console.log('[client]: Template.tellapicChat.events["keypress input"] invoked');
             if (e.charCode == 13) {
                 e.stopPropagation();
                 tellapicChat.post($(e.target).val());

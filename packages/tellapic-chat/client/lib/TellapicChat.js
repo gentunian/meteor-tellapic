@@ -24,7 +24,7 @@ TellapicChat = function () {
                 Session.set('chatSessionId', result);
 
                 if (_debug)
-                    console.log('[client]: created chat ' + Session.get('chatSessionId'));
+                    console.log('[client]: Chat created with session id: ' + Session.get('chatSessionId'));
 
                 // join the recently created chat.
                 _this.join(Session.get('chatSessionId'));
@@ -50,13 +50,8 @@ TellapicChat = function () {
 
                 Session.set('chatSessionId', result);
 
-                /*
-                Meteor.subscribe('chatMessages', _this.chatSessionId);
-                Meteor.subscribe('chatSessions', _this.chatSessionId);
-                */
-
                 if (_debug) 
-                    console.log('[client]: joined chat ' + Session.get('chatSessionId'));
+                    console.log('[client]: joined chat session id: ' + Session.get('chatSessionId'));
             }
         });
     };
@@ -71,14 +66,18 @@ TellapicChat = function () {
         // the date when this message was received.
         var m = {
             chatSessionId: Session.get('chatSessionId'),
-            message: text,
-            createdAt: (new Date()).toJSON()
+            text: text,
+            createdAt: new Date()
         }
 
         // Invokes 'tellapicPostMessage' method on server with the message object
         Meteor.call('tellapicPostMessage', m, function(error, result) {
             if (error) {
                 alert(error.reason);
+            } else {
+
+                if (_debug)
+                    console.log('[client]: message posted to chat with id: ' + Session.get('chatSessionId'));
             }
         });
 

@@ -1,0 +1,16 @@
+    <template name="tellapicDraw_Area">
+        <div id="drawingArea" style="padding:0px; margin:0px;">
+        </div>
+    </template>
+
+    <template name="tellapicDraw_Tools">
+        {{#if currentUser}}
+            <ul class="dropdown-menu navbar-inverse" role="menu">
+                {{#each drawingTools}}
+                <li class="{{activeClass}}">
+                    <a href="#" id="{{id}}" name="{{name}}"><i class="fa {{icon}}"></i>&nbsp; {{name}}</a>
+                </li>
+                {{/each}}
+            </ul>
+        {{/if}}
+    </template>

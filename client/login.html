@@ -12,6 +12,9 @@
                 <li>
                     <a id="showCreateSessionDialog" href="#">Create new session</a>
                 </li>
+                <li>
+                    <a id="showJoinSessionDialog" href="#">Join session</a>
+                </li>
                 <li class="divider"></li>
                 <li>
                     <a id="logout" href="#">Logout</a>
@@ -24,32 +27,55 @@
         {{> loginButtons}}
     </template>
 
+    <template name="joinSessionDialog">
+        <div class="form-group has-feedback">
+            <input type="search" class="form-control" placeholder="Search for session">
+            <i class="fa fa-search form-control-feedback"></i>
+        </div>
+        {{#each availableSessions}}
+            {{> sessionData author=author data=this}}
+        {{/each}}
+    </template>
+
     <template name="createSessionDialog">
-        <div class="row">
-            <div class="col-md-12">
-                <form id="createSessionForm" class="form-horizontal">
-                    <div class="form-group">
-                        <label class="col-md-4 control-label" for="name">Name</label>
-                        <div class="col-md-4">
-                            <input id="name" name="name" type="text" placeholder="Your name" class="form-control input-md">
-                            <span class="help-block">Here goes your name</span>
-                        </div>
+        {{> sessionData author=currentUser.profile.name data=this editable=true}}
+    </template>
+
+    <template name="sessionData">
+        <div class="media" style="border-radius: 5px; border: 1px solid #ddd; padding: 15px;">
+            <div class="media-left">
+                <a href="#">
+                    <div style="cursor: pointer; border: 1px solid #ddd; box-shadow: 1px 1px 5px 0 #a2958a; padding: 6px;">
+                        <label for="f" style="display:block; margin: 0;">
+                            <img id="sessionImageThumbnail" class="media-object" style="width: 96px; height: 96px;">
+                        </label>
+                        <input id="f" type="file" style="display:none;">
                     </div>
-                    <div class="form-group">
-                        <label class="col-md-4 control-label" for="myFile">Image to share</label>
-                        <div class="col-md-4">
-                            <input type="file" id="myFile" accept="image/*">
-                            <p class="help-block">Upload file.</p>
-                            {{#each images}}
-                                {{#if this.isUploaded}}
-                                    {{> FS.UploadProgressBar bootstrap=true class='progress-bar-success active' showPercent=true}}
-                                {{else}}
-                                    {{> FS.UploadProgressBar bootstrap=true class='progress-bar-striped active' showPercent=true}}
-                                {{/if}}
-                            {{/each}}
-                        </div>
-                    </div>
-                </form>
+                </a>
             </div>
+            <div class="media-body">
+                <h4 class="media-heading form-inline">
+                    <input value="{{ sessionName }}" class="form-control hidden" type="text" placeholder="Session name...">
+                    <span style="cursor: pointer;">
+                        {{#if data.sessionName }}
+                            {{ data.sessionName }}
+                        {{else}}
+                        <em style="color:gray; text-style: italic; cursor: pointer;">Click to change title...</em>
+                        {{/if}}
+                    </span>
+                    <small class="pull-right">{{ todayDate }}</small>
+                </h4>
+
+                <textarea class="form-control hidden" maxlength="64">{{ data.sessionDescription }}
+                </textarea>
+                <p style="cursor: pointer;">
+                    {{#if data.sessionDescription }}
+                        {{ data.sessionDescription }}
+                    {{else}}
+                        <em style="color:gray; text-style: italic; cursor: pointer;">Click to change description...</em>
+                    {{/if}}
+                </p>
+            </div>
+            <h4><small class="pull-right">by {{author}}</small></h4>
         </div>
     </template>

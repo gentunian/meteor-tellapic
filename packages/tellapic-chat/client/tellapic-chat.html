@@ -41,7 +41,7 @@
         <div class="message-history">
             {{#if Template.subscriptionsReady}}
                 {{#each messages}}
-                    {{> tellapicChatMessage text=message userId=userId time=receivedAt}}
+                    {{> tellapicChatMessage text=text userId=userId time=receivedAt}}
                 {{/each}}
             {{/if}}
         </div>

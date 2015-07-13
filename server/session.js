@@ -30,7 +30,7 @@ Meteor.methods({
             throw new Meteor.Error('not-logged', 'Not logged users cannot create sessions.');
         } else {
 
-            // create a chat session
+            // creates a chat session
             var chatSessionId = Meteor.call('tellapicCreateChat');
 
             var session = Sessions.insert({

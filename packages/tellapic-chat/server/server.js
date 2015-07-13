@@ -73,7 +73,7 @@ Meteor.methods({
                 var wrappedMsg = {
                     text: msg.text,
                     chatSessionId: msg.chatSessionId,
-                    receivedAt: (new Date()).toJSON(),
+                    receivedAt: new Date(),
                     userId: this.userId
                 };
 
@@ -90,7 +90,7 @@ Meteor.methods({
         if (Meteor.userId() === null) {
             throw new Meteor.Error('not-logged', 'Not logged users cannot delete chat sessions.');
         } else {
-            
+
             if ( ChatSessions.remove({ ownerId: Meteor.userId(), _id: chatSessionId }) > 0 ) {
                 ChatMessages.remove({ _id: chatSessionId });
             }

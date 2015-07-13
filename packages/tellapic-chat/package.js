@@ -14,9 +14,9 @@
         api.use('templating', 'client');
         api.versionsFrom('1.1.0.2');
         api.addFiles(['main.js']);
-        api.addFiles(['server/server.js', 'server/publications/publish.js'], 'server');
+        api.addFiles(['server/server.js', 'server/collections/publish.js'], 'server');
         api.addFiles([
-            'client/subscriptions/subscribe.js',
+            'client/collections/subscribe.js',
             'client/lib/TellapicChat.js',
             'client/tellapic-chat.html',
             'client/tellapic-chat.css',
