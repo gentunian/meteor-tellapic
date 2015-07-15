@@ -24,7 +24,7 @@ Meteor.methods({
         }
     },
 
-    tellapicCreateSession: function () {
+    tellapicCreateSession: function (name, description) {
         // The user must be logged
         if (Meteor.userId() === null) {
             throw new Meteor.Error('not-logged', 'Not logged users cannot create sessions.');
@@ -34,6 +34,8 @@ Meteor.methods({
             var chatSessionId = Meteor.call('tellapicCreateChat');
 
             var session = Sessions.insert({
+                name: name,
+                description: description,
                 ownerId: Meteor.userId(),
                 chatSessionId: chatSessionId,
                 created: (new Date()).toJSON(),

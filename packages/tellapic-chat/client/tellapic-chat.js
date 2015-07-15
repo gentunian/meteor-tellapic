@@ -80,5 +80,3 @@
             }
         },
     });
-
-    Meteor.subscribe('allUsernames');

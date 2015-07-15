@@ -111,8 +111,8 @@ body, html {
   height: -webkit-calc(100% - 50px);
   height: -moz-calc(100% - 50px);
   height: calc(100% - 50px);
-  height: 100%;
   position: fixed;
+  top: 50px;
   left: 350px;
   width: 0;
   margin-left: -350px;
@@ -255,4 +255,54 @@ body, html {
     text-shadow: none;
   }
 
+  /* ---- SESSION CREATE / JOIN OPTIONS ---- */
+  .media.session-data {
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    padding: 15px;
+  }
+
+  .media.session-data:hover {
+    border-color: #66afe9;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
+  }
+
+  .media.session-data > div.media-left > a > div {
+    border: 1px solid #ddd;
+    box-shadow: 1px 1px 5px 0 #a2958a;
+    padding: 6px;
+  }
+
+  .media.session-data > div.media-left > a > div > label {
+    display:block;
+    margin: 0;
+  }
+
+  #sessionImageThumbnail {
+    width: 96px;
+    height: 96px;
+    cursor: pointer;
+  }
+
+  #sessionImageFileInput {
+    display: none;
+  }
+
+  .media.session-data > .media-body span {
+    cursor: pointer;
+  }
+
+  .media.session-data > .media-body p {
+    cursor: pointer;
+  }
+
+  .media.session-data > .media-body span.session-data-placeholder {
+    font-style: italic;
+    color: gray;
+  }
+
+  .media.session-data > .media-body p.session-data-placeholder {
+    font-style: italic;
+    color: gray;
+  }
 }

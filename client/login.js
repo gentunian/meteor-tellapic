@@ -1,50 +1,50 @@
+    var createdSessionDefaults = {
+        sessionName: 'Click to change title',
+        sessionDescription: 'Click to change description',
+        ownerId: Meteor.userId(),
+        createdAt: moment().format('LL'),
+        editingName: false,
+        editingDescription: false,
+        sessionNameClass: 'session-data-placeholder',
+        sessionDescriptionClass: 'session-data-placeholder'
+    };
+    createdSessionDefaults = Object.freeze(createdSessionDefaults);
+
+    Template.registerHelper('SessionGet', function (key) {
+        return Session.get(key);
+    });
+
+    Template.sessionDialog.onRendered(function() {
+        $('#myModal').on('hidden.bs.modal', function (e) {
+            Blaze.remove(Blaze.getView($('#myModal').get(0)));
+        })
+    });
 
     Template.loggedin.events({
 
         "click #showCreateSessionDialog": function (e, tmpl) {
-            bootbox.dialog({
-                title: '',
-                message: '<div id="createSessionDialogWrapper"></div>',
-                buttons: {
-                    success: {
-                        label: "Create",
-                        className: "btn-success",
-                        callback: function () {  }
-                    },
-                    main: {
-                        label: "Cancel",
-                        className: "btn-default",
-                        callback: function () {  }
-                    }
+            Blaze.renderWithData(Template.sessionDialog, 
+                {
+                    dialogTitle: 'Create Session',
+                    primaryButtonText: 'Create',
+                    createSession: true,
                 },
-                closeButton: false,
-            });
-            Blaze.render(Template.createSessionDialog, $("#createSessionDialogWrapper").get(0));
+                $('body').get(0)
+                );
         },
 
         "click #showJoinSessionDialog": function (e, tmpl) {
-            bootbox.dialog({
-                title: '',
-                message: '<div id="joinSessionDialogWrapper" style="overflow:auto; height:450px; padding: 15px;"></div>',
-                buttons: {
-                    success: {
-                        label: "Create",
-                        className: "btn-success",
-                        callback: function () {}
-                    },
-                    main: {
-                        label: "Cancel",
-                        className: "btn-default",
-                        callback: function () { }
-                    }
+            Blaze.renderWithData(Template.sessionDialog,
+                {
+                    dialogTitle: 'Join Session',
+                    primaryButtonText: 'Join',
+                    createSession: false,
                 },
-                closeButton: false,
-            });
-            Blaze.render(Template.joinSessionDialog, $("#joinSessionDialogWrapper").get(0));
+                $('body').get(0)
+                );
         },
 
         "click #logout": function (e, tmpl) {
-            console.log('logout clicked');
             Meteor.logout(function (err) {
                 console.log(err);
             });
@@ -52,22 +52,12 @@
 
     });
 
-    Template.createSessionDialog.onRendered(function () {
+    Template.sessionDialog.events({
 
-        Meteor.call('tellapicCreateSession', function(error, result) {
-            if (error) {
-                console.log(error);
-            } else {
-             //   Session.set('sessionId', result);
-            }
-        });
-
-    });
-
-    Template.createSessionDialog.events({
         "click ul > li[role=presentation] > a": function (e, tmpl) {
             $('.modal-footer > button[data-bb-handler="success"]').html(e.target.innerText);
         },
+
         "change #myFile": function (e, tmpl) {
             // Do nothing if no files were selected
             if (e.target.files.length == 0)
@@ -111,7 +101,11 @@
         }
     });
 
-    Template.createSessionDialog.helpers({
+    Template.sessionDialog.helpers({
+
+        disablePrimaryButton: function () {
+            return Session.get('createdSession') === undefined || Session.get('createdSession').sessionName === undefined;
+        },
 
         uploadingImages: function () {
             console.log('[client]: Template.createSessionDialog.helpers["uploadingImages"] invoked');
@@ -121,12 +115,13 @@
         images: function () {
             console.log('[client]: Template.createSessionDialog.helpers["images"] invoked');
 
+        },
+
+        createdSession: function () {
+            // use defaults values. Only overrides values that are set in current session
+            return _.extend(_.clone(createdSessionDefaults), Session.get('createdSession'));
         }
 
-    });
-
-    Template.registerHelper('session', function (key) {
-            return Session.keys;
     });
 
     Template.sessionData.helpers({
@@ -134,44 +129,75 @@
             return moment().format('LL');
         },
 
+        getUsernameById: function(id) {
+            var u = Meteor.users.findOne(id);
+            if (u) {
+                if (u.username) {
+                    return u.username;
+                } else {
+                    return u.profile.name;
+                }
+            }
+            return u;
+        },
+
     });
 
     Template.sessionData.events({
-        "blur h4.media-heading > input": function (e, tmpl) {
-            if (e.target.value) {
-                tmpl.$('h4.media-heading > span').html(e.target.value);
-            }
-            tmpl.$('h4.media-heading > input, h4.media-heading > span').toggleClass('hidden');
-        },
-        "focus h4.media-heading > input": function (e, tmpl) {
-            e.target.value = tmpl.$('h4.media-heading > span').val();
-        },
+
+        // When the Session name input field gets keyboard input
         "keypress h4.media-heading > input": function (e, tmpl) {
             if (e.keyCode == 13) {
                 $(e.target).blur();
             }
         },
-        "click h4.media-heading > span": function (e, tmpl) {
-            tmpl.$('h4.media-heading > input, h4.media-heading > span').toggleClass('hidden');
-            tmpl.$('h4.media-heading > input').focus();
-        },
-        "blur .media-body > textarea": function (e, tmpl) {
-            if (e.target.value) {
-                tmpl.$('.media-body > p:first').html(e.target.value);
+
+        // When the Session name input field lost focus
+        "blur h4.media-heading > input": function (e, tmpl) {
+            var session = Session.get('createdSession') || {};
+            session.editingName = false;
+            if (e.target.value != '' && e.target.value != createdSessionDefaults.sessionName) {
+                session.sessionName = e.target.value
+                session.sessionNameClass = '';
             }
-            tmpl.$('.media-body > p:first, .media-body > textarea').toggleClass('hidden');
+            Session.set('createdSession', session);
         },
+
+        // When the Session name input field gain focus
+        "focus h4.media-heading > input": function (e, tmpl) {
+            $(e.target).select();
+        },
+
+        // When the Session name title gets clicked
+        "click h4.media-heading > span": function (e, tmpl) {
+            var session = Session.get('createdSession') || {};
+            session.editingName = true;
+            Session.set('createdSession', session);
+        },
+
+        "blur .media-body > textarea": function (e, tmpl) {
+            var session = Session.get('createdSession') || {};
+            session.editingDescription = false;
+            if (e.target.value != '' && e.target.value != createdSessionDefaults.sessionDescription) {
+                session.sessionDescription = e.target.value
+                session.sessionDescriptionClass = '';
+            }
+            Session.set('createdSession', session);
+        },
+
         "focus .media-body > textarea": function (e, tmpl) {
-            e.target.value = tmpl.$('.media-body > p:first').val();
+            $(e.target).select();
         },
+
         "click .media-body > p:first": function (e, tmpl) {
-            tmpl.$('.media-body > textarea, .media-body > p:first').toggleClass('hidden');
-            tmpl.$('.media-body > textarea').focus();
+            var session = Session.get('createdSession') || {};
+            session.editingDescription = true;
+            Session.set('createdSession', session);
         }
     });
 
-    Template.joinSessionDialog.helpers({
-        availableSessions: function (e, tnpl) {
+    Template.availableSessions.helpers({
+        availableSessions: function (e, tmpl) {
             return Session.get('availableSessions');
         }
     });
